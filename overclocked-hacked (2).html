@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVERCLOCKED SYSTEMS BREACH</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a2a;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+        
+        /* Matrix background effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 255, 0.15),
+                rgba(0, 255, 255, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            animation: scrollDown 20s linear infinite;
+        }
+        
+        @keyframes scrollDown {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        /* Breach overlay */
+        .breach-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,0,0,0.05);
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Overclocked header */
+        .overclocked-header {
+            background-color: #000;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff0000;
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .overclocked-logo {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            filter: drop-shadow(0 0 5px #ff0000);
+            animation: glitch 3s infinite;
+        }
+        
+        .overclocked-title {
+            display: inline-block;
+            color: white;
+            font-size: 28px;
+            vertical-align: middle;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        /* Main content */
+        .container {
+            display: flex;
+            height: calc(100vh - 110px);
+        }
+        
+        /* Left panel - robot status */
+        .robot-panel {
+            width: 25%;
+            background-color: #050510;
+            border-right: 1px solid #333;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            color: #ff0000;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .robot-unit {
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            position: relative;
+        }
+        
+        .unit-header {
+            background-color: #111;
+            padding: 5px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .unit-status {
+            color: #ff0000;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        
+        .unit-content {
+            height: 120px;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+            padding: 10px;
+        }
+        
+        .unit-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150' viewBox='0 0 300 150'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='150' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+        
+        .unit-details {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .unit-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+        
+        .metric-name {
+            color: #888;
+        }
+        
+        .metric-value {
+            color: #00ffff;
+        }
+        
+        .critical {
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+        
+        .warning {
+            color: orange;
+        }
+        
+        /* Main panel - failure report */
+        .failure-panel {
+            flex-grow: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .failure-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .failure-title {
+            color: #ff0000;
+            font-size: 24px;
+            text-transform: uppercase;
+            animation: glitch 3s infinite;
+        }
+        
+        .failure-status {
+            background-color: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            animation: blink 1s infinite;
+        }
+        
+        .countdown {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ff0000;
+            letter-spacing: 3px;
+        }
+        
+        .failure-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+        }
+        
+        .grid-item {
+            background-color: rgba(0, 20, 40, 0.5);
+            border: 1px solid #333;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .grid-title {
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #fff;
+        }
+        
+        .grid-content {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .failure-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .failure-list li {
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .failure-list li::before {
+            content: "•";
+            color: #ff0000;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Right panel - failure logs */
+        .log-panel {
+            width: 25%;
+            background-color: #050510;
+            border-left: 1px solid #333;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-left: 3px solid #ff0000;
+            font-size: 12px;
+        }
+        
+        .log-timestamp {
+            color: #888;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+        
+        .log-critical {
+            background-color: rgba(255, 0, 0, 0.2);
+            border-left-color: #ff0000;
+        }
+        
+        .log-warning {
+            background-color: rgba(255, 165, 0, 0.1);
+            border-left-color: orange;
+        }
+        
+        /* Console panel at bottom */
+        .console-panel {
+            background-color: #000;
+            border-top: 1px solid #333;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 150px;
+            overflow-y: auto;
+        }
+        
+        .console-line {
+            margin: 3px 0;
+        }
+        
+        .console-timestamp {
+            color: #888;
+            margin-right: 8px;
+        }
+        
+        .console-command {
+            color: #00ff00;
+        }
+        
+        .console-error {
+            color: #ff0000;
+        }
+        
+        .console-warning {
+            color: orange;
+        }
+        
+        .console-success {
+            color: #00ff00;
+        }
+        
+        /* Performance chart */
+        .performance-chart {
+            width: 100%;
+            height: 90%;
+            background-color: #000;
+            border: 1px solid #333;
+            position: relative;
+        }
+        
+        .chart-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .chart-line {
+            position: absolute;
+            bottom: 10%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #ff0000;
+            z-index: 2;
+        }
+        
+        .chart-line::before {
+            content: "Expected";
+            position: absolute;
+            right: 10px;
+            top: -15px;
+            color: #ff0000;
+            font-size: 10px;
+        }
+        
+        .chart-data {
+            position: absolute;
+            bottom: 10%;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='100' viewBox='0 0 800 100'%3E%3Cpath d='M0,50 Q50,0 100,80 T200,40 T300,70 T400,20 T500,50 T600,30 T700,60 T800,10' fill='none' stroke='%2300ffff' stroke-width='2'/%3E%3C/svg%3E");
+            background-size: cover;
+            animation: chartScroll 20s linear infinite;
+        }
+        
+        @keyframes chartScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: -800px 0; }
+        }
+        
+        /* Schematics */
+        .schematics {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            position: relative;
+        }
+        
+        .schematic-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cpath d='M50,50 h300 v200 h-300 z' fill='none' stroke='%2300ffff' stroke-width='1' stroke-dasharray='5,5'/%3E%3Ccircle cx='200' cy='150' r='50' fill='none' stroke='%2300ffff' stroke-width='1'/%3E%3Cpath d='M150,150 h100 M200,100 v100' stroke='%2300ffff' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.3;
+        }
+        
+        .schematic-error {
+            color: #ff0000;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            animation: blink 2s infinite;
+            z-index: 2;
+            position: relative;
+        }
+        
+        /* Animations */
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.5; }
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: none; }
+            20% { text-shadow: -2px 0 #ff0000; }
+            40% { text-shadow: 2px 0 #0000ff; }
+            60% { text-shadow: none; }
+            80% { text-shadow: 2px -2px #ff0000; }
+            100% { text-shadow: none; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Popup alerts */
+        .alert-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #000;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            text-align: center;
+            min-width: 300px;
+            display: none;
+        }
+        
+        .alert-popup h2 {
+            color: #ff0000;
+            margin-top: 0;
+        }
+        
+        .alert-popup button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Flickering effect for lights */
+        .flicker {
+            animation: flicker 5s infinite step-end;
+        }
+        
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="breach-overlay"></div>
+    
+    <div class="overclocked-header">
+        <img src="https://github.com/team-overclocked/overclocked.cc/blob/main/favicon.png?raw=true" alt="Overclocked Logo" class="overclocked-logo">
+        <div class="overclocked-title">OVERCLOCKED ROBOTICS</div>
+    </div>
+    
+    <div class="container">
+        <!-- Left Panel - Robot Status -->
+        <div class="robot-panel">
+            <div class="panel-title">ROBOT UNITS</div>
+            
+            <div class="robot-unit">
+                <div class="unit-header">
+                    <span>UNIT-001 (ALPHA PROTOTYPE)</span>
+                    <span class="unit-status">FAILURE</span>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-static"></div>
+                    <div class="unit-details">
+                        <div class="unit-metric">
+                            <span class="metric-name">CPU Temperature:</span>
+                            <span class="metric-value critical">143°C</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Motor Performance:</span>
+                            <span class="metric-value critical">17%</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Battery Status:</span>
+                            <span class="metric-value critical">THERMAL RUNAWAY</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">System Status:</span>
+                            <span class="metric-value critical">CATASTROPHIC FAILURE</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Last Command:</span>
+                            <span class="metric-value">"walk_forward.exe"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="robot-unit">
+                <div class="unit-header">
+                    <span>UNIT-002 (BETA BUILD)</span>
+                    <span class="unit-status">OFFLINE</span>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-static"></div>
+                    <div class="unit-details">
+                        <div class="unit-metric">
+                            <span class="metric-name">CPU Temperature:</span>
+                            <span class="metric-value warning">89°C</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Motor Performance:</span>
+                            <span class="metric-value warning">42%</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Battery Status:</span>
+                            <span class="metric-value">DEPLETED</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">System Status:</span>
+                            <span class="metric-value">SHUTDOWN</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Last Command:</span>
+                            <span class="metric-value">"avoid_obstacle.exe"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="robot-unit">
+                <div class="unit-header">
+                    <span>UNIT-003 (GAMMA MODEL)</span>
+                    <span class="unit-status">CORRUPTED</span>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-static"></div>
+                    <div class="unit-details">
+                        <div class="unit-metric">
+                            <span class="metric-name">CPU Temperature:</span>
+                            <span class="metric-value warning">87°C</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Motor Performance:</span>
+                            <span class="metric-value critical">ERROR</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Battery Status:</span>
+                            <span class="metric-value warning">32%</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">System Status:</span>
+                            <span class="metric-value critical">MEMORY CORRUPTED</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Last Command:</span>
+                            <span class="metric-value">"???ERROR???"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="robot-unit">
+                <div class="unit-header">
+                    <span>UNIT-004 (DEMONSTRATION MODEL)</span>
+                    <span class="unit-status">DISMANTLED</span>
+                </div>
+                <div class="unit-content">
+                    <div class="unit-static"></div>
+                    <div class="unit-details">
+                        <div class="unit-metric">
+                            <span class="metric-name">CPU Temperature:</span>
+                            <span class="metric-value">N/A</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Motor Performance:</span>
+                            <span class="metric-value">0%</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Battery Status:</span>
+                            <span class="metric-value">DISCONNECTED</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">System Status:</span>
+                            <span class="metric-value">DISMANTLED AFTER DEMO</span>
+                        </div>
+                        <div class="unit-metric">
+                            <span class="metric-name">Last Command:</span>
+                            <span class="metric-value">"dance_routine.exe"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Panel - Failure Reports -->
+        <div class="failure-panel">
+            <div class="failure-header">
+                <div class="failure-title">PROJECT FAILURE ANALYSIS</div>
+                <div class="failure-status">CRITICAL</div>
+            </div>
+            
+            <div class="countdown">TIME SINCE LAST SUCCESS: 127 DAYS</div>
+            
+            <div class="failure-grid">
+                <div class="grid-item">
+                    <div class="grid-title">CRITICAL DESIGN FLAWS</div>
+                    <div class="grid-content">
+                        <ul class="failure-list">
+                            <li>Power consumption exceeds battery capacity by 340%</li>
+                            <li>Motor driver circuits consistently overheat past 74°C</li>
+                            <li>CPU cooling system inadequate for processing load</li>
+                            <li>Balance algorithms fail on anything but perfectly flat surfaces</li>
+                            <li>Actuator response time 4.3x slower than minimum requirements</li>
+                            <li>Weight distribution causes forward tipping at speeds > 0.5 m/s</li>
+                            <li>Sensor array fails to detect transparent obstacles</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="grid-item">
+                    <div class="grid-title">PERFORMANCE METRICS</div>
+                    <div class="performance-chart">
+                        <div class="chart-grid"></div>
+                        <div class="chart-line"></div>
+                        <div class="chart-data"></div>
+                    </div>
+                </div>
+                
+                <div class="grid-item">
+                    <div class="grid-title">ENGINEERING SCHEMATICS</div>
+                    <div class="schematics">
+                        <div class="schematic-overlay"></div>
+                        <div class="schematic-error">CRITICAL DESIGN ERRORS DETECTED</div>
+                    </div>
+                </div>
+                
+                <div class="grid-item">
+                    <div class="grid-title">BUDGET ANALYSIS</div>
+                    <div class="grid-content">
+                        <p>Original budget: $750,000</p>
+                        <p>Current expenditures: $2,347,921</p>
+                        <p>Budget overrun: 313%</p>
+                        <p>Cost per functional prototype: ERROR - NO FUNCTIONAL PROTOTYPES</p>
+                        <p>Estimated additional funding needed: $1,500,000</p>
+                        <p>Probability of project success with additional funding: 12.7%</p>
+                        <p>Recommendation: TERMINATE PROJECT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Failure Logs -->
+        <div class="log-panel">
+            <div class="panel-title">FAILURE LOGS</div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">03/21/2025 14:22:37</div>
+                <div>UNIT-001 CATASTROPHIC FAILURE DURING WALKING TEST. MOTOR CONTROLLER OVERHEATED AND CAUGHT FIRE.</div>
+            </div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">03/18/2025 09:15:42</div>
+                <div>UNIT-003 MEMORY CORRUPTION DURING SOFTWARE UPDATE. ROBOT ATTEMPTED TO CLIMB WALL.</div>
+            </div>
+            
+            <div class="log-entry log-warning">
+                <div class="log-timestamp">03/15/2025 16:47:19</div>
+                <div>BATTERY LIFE TESTS SHOW 78% BELOW EXPECTED PERFORMANCE. POWER DRAW EXCESSIVE.</div>
+            </div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">03/12/2025 11:32:05</div>
+                <div>DEMONSTRATION FOR INVESTORS ENDED WITH UNIT-004 FALLING OFF STAGE. PROJECT FUNDING IN JEOPARDY.</div>
+            </div>
+            
+            <div class="log-entry log-warning">
+                <div class="log-timestamp">03/10/2025 08:59:27</div>
+                <div>ACTUATOR RESPONSE TIME SIGNIFICANTLY BELOW SPECIFICATIONS. BALANCE ALGORITHMS CANNOT COMPENSATE.</div>
+            </div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">03/05/2025 14:05:53</div>
+                <div>UNIT-002 ENTERED ENDLESS LOOP DURING OBSTACLE COURSE. BATTERY DEPLETED BEFORE RESOLUTION.</div>
+            </div>
+            
+            <div class="log-entry log-warning">
+                <div class="log-timestamp">03/01/2025 10:17:38</div>
+                <div>SENSOR FUSION ALGORITHM FAILING TO INTEGRATE LIDAR AND CAMERA DATA. OBSTACLE DETECTION UNRELIABLE.</div>
+            </div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">02/25/2025 16:42:21</div>
+                <div>STRESS TESTING RESULTED IN STRUCTURAL FAILURE OF CHASSIS. REDESIGN REQUIRED.</div>
+            </div>
+            
+            <div class="log-entry log-critical">
+                <div class="log-timestamp">02/21/2025 09:33:08</div>
+                <div>BUDGET OVERRUN EXCEEDS 200%. BOARD MEETING SCHEDULED TO DISCUSS PROJECT VIABILITY.</div>
+            </div>
+            
+            <div class="log-entry log-warning">
+                <div class="log-timestamp">02/15/2025 13:27:45</div>
+                <div>THIRD-PARTY COMPONENT DELIVERY DELAYED BY 6 WEEKS. PROJECT TIMELINE AFFECTED.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Console Panel -->
+    <div class="console-panel">
+        <div class="console-line"><span class="console-timestamp">14:22:37</span> <span class="console-command">./run_diagnostics.sh --all-units</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:38</span> <span class="console-warning">Warning: Multiple systems in failure state. Continue? (y/n)</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:39</span> <span class="console-command">y</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:40</span> <span class="console-warning">Running diagnostics on UNIT-001...</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:45</span> <span class="console-error">ERROR: UNIT-001 - Critical temperature threshold exceeded. Thermal shutdown failed.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:46</span> <span class="console-warning">Running diagnostics on UNIT-002...</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:51</span> <span class="console-error">ERROR: UNIT-002 - Unable to establish connection. Unit is offline.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:52</span> <span class="console-warning">Running diagnostics on UNIT-003...</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:57</span> <span class="console-error">ERROR: UNIT-003 - Memory corruption detected. Checksums do not match.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:22:58</span> <span class="console-warning">Running diagnostics on UNIT-004...</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:03</span> <span class="console-error">ERROR: UNIT-004 - Unit does not exist or has been dismantled.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:04</span> <span class="console-error">DIAGNOSTIC SUMMARY: All units failed or offline. Project in critical state.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:05</span> <span class="console-command">./generate_report.sh --failure-analysis</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:10</span> <span class="console-warning">Generating comprehensive failure analysis report...</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:20</span> <span class="console-error">RECOMMENDATION: Project termination. Suggested alternative use of funds: Paper airplane research.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:25</span> <span class="console-command">./calculate_roi.sh</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:30</span> <span class="console-error">ERROR: Cannot calculate ROI. Division by zero - no returns generated.</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:35</span> <span class="console-command">./contact_investors.sh --urgent</span></div>
+        <div class="console-line"><span class="console-timestamp">14:23:40</span> <span class="console-warning">Preparing urgent investor communication. Subject: "Important Overclocked Update"</span></div>
+    </div>
+    
+    <!-- Alert Popups -->
+    <div class="alert-popup" id="failure-alert">
+        <h2>CATASTROPHIC FAILURE</h2>
+        <p>Multiple Overclocked units have suffered critical system failures.</p>
+        <p>Project leadership meeting scheduled for immediate damage control.</p>
+        <button onclick="this.parentNode.style.display='none';">ACKNOWLEDGE</button>
+    </div>
+    
+    <div class="alert-popup" id="budget-alert">
+        <h2>BUDGET CRISIS</h2>
+        <p>Project Overclocked has exceeded allocated budget by 313%.</p>
+        <p>Finance department requests immediate explanation.</p>
+        <button onclick="this.parentNode.style.display='none';">PREPARE EXCUSES</button>
+    </div>
+    
+    <div class="alert-popup" id="investor-alert">
+        <h2>INVESTOR CONFIDENCE: CRITICAL</h2>
+        <p>Funding partners requesting emergency meeting following demonstration failure.</p>
+        <p>Prepare contingency plan for project cancellation.</p>
+        <button onclick="this.parentNode.style.display='none';">UPDATE RESUME</button>
+    </div>
+    
+    <script>
+        // Countdown Timer
+        const countdownDisplay = document.querySelector('.countdown');
+        let days = 127;
+        let hours = 12;
+        let minutes = 47;
+        let seconds = 59;
+        
+        function updateCountdown() {
+            seconds++;
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours++;
+                    if (hours >= 24) {
+                        hours = 0;
+                        days++;
+                    }
+                }
+            }
+            
+            countdownDisplay.textContent = `TIME SINCE LAST SUCCESS: ${days} DAYS, ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        setInterval(updateCountdown, 1000);
+        
+        // Console Input Simulation
+        const consolePanel = document.querySelector('.console-panel');
+        
+        function addConsoleMessage() {
+            const randomCommands = [
+                './reboot_unit.sh --force',
+                './check_power_consumption.sh',
+                './analyze_motor_failure.sh',
+                './estimate_repair_costs.sh',
+                './contact_technical_support.sh',
+                './beg_for_more_funding.sh',
+                './update_resume.sh',
+                './schedule_press_release.sh --damage-control',
+                './search_for_new_jobs.sh'
+            ];
+            
+            const randomResponses = [
+                'ERROR: Operation failed. Hardware unresponsive.',
+                'WARNING: Values exceed acceptable parameters.',
+                'ERROR: System integrity compromised.',
+                'WARNING: Backup systems failing.',
+                'ERROR: Unable to establish connection to server.',
+                'CRITICAL: Data corruption detected.',
+                'WARNING: This action may void warranty.',
+                'ERROR: Insufficient memory to complete operation.',
+                'WARNING: Battery temperature exceeding safe levels.'
+            ];
+            
+            const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            // Randomly decide to show a command or response
+            if (Math.random() < 0.3) {
+                const command = randomCommands[Math.floor(Math.random() * randomCommands.length)];
+                const commandLine = document.createElement('div');
+                commandLine.className = 'console-line';
+                commandLine.innerHTML = `<span class="console-timestamp">${timestamp}</span> <span class="console-command">${command}</span>`;
+                consolePanel.appendChild(commandLine);
+            } else {
+                const response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+                const responseLine = document.createElement('div');
+                responseLine.className = 'console-line';
+                responseLine.innerHTML = `<span class="console-timestamp">${timestamp}</span> <span class="console-error">${response}</span>`;
+                consolePanel.appendChild(responseLine);
+            }
+            
+            // Limit the number of lines in the console
+            if (consolePanel.children.length > 20) {
+                consolePanel.removeChild(consolePanel.children[0]);
+            }
+            
+            // Scroll to bottom
+            consolePanel.scrollTop = consolePanel.scrollHeight;
+        }
+        
+        // Add random console messages
+        setInterval(addConsoleMessage, 5000);
+        
+        // Show random alerts
+        function showRandomAlert() {
+            const alerts = ['failure-alert', 'budget-alert', 'investor-alert'];
+            const randomAlert = document.getElementById(alerts[Math.floor(Math.random() * alerts.length)]);
+            randomAlert.style.display = 'block';
+            
+            // Add glitch effect to screen when alert shows
+            document.body.style.filter = 'hue-rotate(90deg)';
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+            }, 500);
+        }
+        
+        // Show first alert after a delay
+        setTimeout(() => {
+            document.getElementById('failure-alert').style.display = 'block';
+        }, 5000);
+        
+        // Periodically show random alerts
+        setInterval(showRandomAlert, 30000);
+        
+        // Update random metrics in robot units
+        function updateRobotMetrics() {
+            // Get all metric values
+            const metricValues = document.querySelectorAll('.metric-value');
+            
+            // Select a random subset to update
+            const numToUpdate = Math.floor(Math.random() * 5) + 1;
+            for (let i = 0; i < numToUpdate; i++) {
+                const randomIndex = Math.floor(Math.random() * metricValues.length);
+                const metricValue = metricValues[randomIndex];
+                
+                // Only update numeric values like temperature or percentage
+                if (metricValue.textContent.includes('°C')) {
+                    // Update temperature randomly
+                    const currentTemp = parseInt(metricValue.textContent);
+                    if (!isNaN(currentTemp)) {
+                        const newTemp = currentTemp + Math.floor(Math.random() * 11) - 5;
+                        metricValue.textContent = `${newTemp}°C`;
+                        
+                        // Update status based on temperature
+                        if (newTemp > 100) {
+                            metricValue.className = 'metric-value critical';
+                        } else if (newTemp > 80) {
+                            metricValue.className = 'metric-value warning';
+                        } else {
+                            metricValue.className = 'metric-value';
+                        }
+                    }
+                } else if (metricValue.textContent.includes('%') && !metricValue.textContent.includes('ERROR')) {
+                    // Update percentage randomly
+                    const currentPct = parseInt(metricValue.textContent);
+                    if (!isNaN(currentPct)) {
+                        const newPct = Math.max(0, Math.min(100, currentPct + Math.floor(Math.random() * 11) - 5));
+                        metricValue.textContent = `${newPct}%`;
+                        
+                        // Update status based on percentage
+                        if (newPct < 20) {
+                            metricValue.className = 'metric-value critical';
+                        } else if (newPct < 50) {
+                            metricValue.className = 'metric-value warning';
+                        } else {
+                            metricValue.className = 'metric-value';
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Update random robot metrics periodically
+        setInterval(updateRobotMetrics, 3000);
+        
+        // Random glitch effects
+        function randomGlitchEffect() {
+            if (Math.random() < 0.1) {
+                const elements = document.querySelectorAll('.grid-item, .robot-unit, .failure-title, .overclocked-logo');
+                const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                
+                // Apply random glitch effect
+                const effectType = Math.floor(Math.random() * 3);
+                
+                if (effectType === 0) {
+                    // Color shift
+                    randomElement.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                    setTimeout(() => {
+                        randomElement.style.filter = 'none';
+                    }, 500);
+                } else if (effectType === 1) {
+                    // Position shift
+                    randomElement.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+                    setTimeout(() => {
+                        randomElement.style.transform = 'none';
+                    }, 300);
+                } else {
+                    // Flicker
+                    randomElement.style.opacity = 0.5;
+                    setTimeout(() => {
+                        randomElement.style.opacity = 1;
+                    }, 100);
+                }
+            }
+        }
+        
+        // Apply random glitch effects periodically
+        setInterval(randomGlitchEffect, 2000);
+        
+        // Add new log entries randomly
+        function addRandomLogEntry() {
+            if (Math.random() < 0.2) {
+                const logPanel = document.querySelector('.log-panel');
+                const logTypes = ['log-critical', 'log-warning'];
+                const logType = logTypes[Math.floor(Math.random() * logTypes.length)];
+                
+                // Create random log messages
+                const logMessages = [
+                    'MOTION CONTROL ALGORITHM FAILED BASIC STABILITY TEST.',
+                    'POWER MANAGEMENT SYSTEM REPORTING INCONSISTENT READINGS.',
+                    'ACTUATOR #7 RESPONSE TIME EXCEEDING MAXIMUM THRESHOLD.',
+                    'SOFTWARE BUILD FAILED WITH 47 CRITICAL ERRORS.',
+                    'SENSOR CALIBRATION DATA CORRUPTED DURING TRANSFER.',
+                    'TESTING PROTOCOL ABORTED DUE TO SAFETY CONCERNS.',
+                    'HARDWARE REVISION NEEDED TO ADDRESS OVERHEATING ISSUES.',
+                    'COMPETITOR PRODUCT OUTPERFORMED OVERCLOCKED UNIT BY 230%.',
+                    'EMERGENCY SHUTDOWN TRIGGERED BY THERMAL SENSORS.',
+                    'COMMUNICATION PROTOCOL STACK OVERFLOW DETECTED.'
+                ];
+                
+                const randomMessage = logMessages[Math.floor(Math.random() * logMessages.length)];
+                
+                // Create timestamp
+                const date = new Date();
+                const timestamp = date.toLocaleDateString() + ' ' + date.toLocaleTimeString('en-US', { hour12: false });
+                
+                // Create log entry
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${logType}`;
+                logEntry.innerHTML = `
+                    <div class="log-timestamp">${timestamp}</div>
+                    <div>${randomMessage}</div>
+                `;
+                
+                // Add to beginning of log panel
+                if (logPanel.firstChild) {
+                    logPanel.insertBefore(logEntry, logPanel.firstChild);
+                } else {
+                    logPanel.appendChild(logEntry);
+                }
+                
+                // Limit number of log entries
+                if (logPanel.children.length > 11) {
+                    // Remove panel title from count by starting from the second child
+                    logPanel.removeChild(logPanel.children[logPanel.children.length - 1]);
+                }
+            }
+        }
+        
+        // Add random log entries periodically
+        setInterval(addRandomLogEntry, 15000);
+    </script>
+</body>
+</html>
